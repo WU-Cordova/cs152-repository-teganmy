@@ -3,25 +3,51 @@ from datastructures.ibag import IBag, T
 
 class Bag(IBag[T]):
     def __init__(self, *items: Optional[Iterable[T]]) -> None:
-        raise NotImplementedError("__init__ method not implemented")
+        self.__bag: dict[T, int] = {}
+        if items: 
+            for item in items:
+                self.add(item)
 
     def add(self, item: T) -> None:
-        raise NotImplementedError("add method not implemented")
-
+        if item == None: 
+            raise TypeError("Cannot add None type")
+        elif item in self.__bag:
+            self.__bag[item] += 1
+        else:
+            self.__bag[item] = 1
+                 
     def remove(self, item: T) -> None:
-        raise NotImplementedError("remove method not implemented")
+        if item not in self.__bag:
+            raise ValueError("Item not in bag")
+        elif item in self.__bag:
+            if self.__bag[item] > 1:
+                self.__bag[item] -= 1
+            else:
+                self.__bag.pop(item)
 
     def count(self, item: T) -> int:
-        raise NotImplementedError("count method not implemented")
+        if item == None: 
+            raise ValueError("Cannot remove None type")
+        elif not(item in self.__bag):
+            count = 0
+        else:
+            count = self.__bag.get(item)
+        return count
 
     def __len__(self) -> int:
-        raise NotImplementedError("__len__ method not implemented")
+        length = 0
+        for item in self.__bag:
+            length += self.count(item)
+        return length
 
     def distinct_items(self) -> Iterable[T]:
-        raise NotImplementedError("distinct_items method not implemented")
+        distinct = set()
+        for item in self.__bag:
+            distinct.add(item)
+        return distinct
 
     def __contains__(self, item) -> bool:
-        raise NotImplementedError("__contains__ method not implemented")
+        return item in self.__bag
 
     def clear(self) -> None:
-        raise NotImplementedError("clear method not implemented")
+        self.__bag.clear()
