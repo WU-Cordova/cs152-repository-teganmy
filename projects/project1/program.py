@@ -1,6 +1,8 @@
 
+from datastructures.bag import Bag
 
 def main():
+    bag = Bag()
     
     print("Hello, World!")
 
