@@ -25,7 +25,7 @@ def shuffle(deck):
 def deal(multiDeck):
     hand = []
     for i in range(2):
-        card = random.choice(multiDeck())
+        card = random.choice(list(multiDeck.distinct_items()))
         hand.append(card)
         multiDeck.remove(card)
     return(hand)
