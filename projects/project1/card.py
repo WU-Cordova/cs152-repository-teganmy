@@ -8,7 +8,6 @@ class CardSuit(Enum):
     DIAMONDS = "♦︎"
 
 class CardFace(Enum): 
-    ONE = "1"
     TWO = "2"
     THREE = "3"
     FOUR = "4"
@@ -17,11 +16,10 @@ class CardFace(Enum):
     SEVEN = "7"
     EIGHT = "8"
     NINE = "9"
-    TEN = "10"
     JACK = "10"
     QUEEN = "10"
     KING = "10"
-    ACE = "11"
+    ACE = "1", "11"
 
 @dataclass
 class Card:

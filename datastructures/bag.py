@@ -51,3 +51,4 @@ class Bag(IBag[T]):
 
     def clear(self) -> None:
         self.__bag.clear()
+        
