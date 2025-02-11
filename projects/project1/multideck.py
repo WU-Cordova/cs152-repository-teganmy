@@ -9,7 +9,7 @@ class Deck:
     def make_deck(self):
         for suit in list(CardSuit):
             for face in list(CardFace):
-                self.cards.append(Card(suit.value, face.value))
+                self.cards.append(Card(face, suit))
 
 
 def shuffle(deck):
@@ -19,7 +19,8 @@ def shuffle(deck):
         decks = random.randint(2,8)
     for d in range(decks):
         for card in deck.cards:
-            multiDeck.add((card.card_suit, card.card_face))
+            multiDeck.add(card)
+            #multiDeck.add((card.card_suit, card.card_face))
     return multiDeck
 
 def deal(multiDeck):
@@ -29,4 +30,12 @@ def deal(multiDeck):
         hand.append(card)
         multiDeck.remove(card)
     return(hand)
+
+# def dealer_hand(multiDeck):
+#     hand = []
+#     for i in range(2):
+#         card = random.choice(list(multiDeck.distinct_items()))
+#         hand.append(card)
+#         multiDeck.remove(card)
+#     return(hand)
 
