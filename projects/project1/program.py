@@ -19,6 +19,7 @@ def main():
         while (game.over == False and game.player_score < 21 and game.dealer_score < 21):
             game.round()            
         playing = input("Would you like to play again? (Y)es or (N)o: ")
+    print("Game over! Thanks for playing :)")
 
 if __name__ == '__main__':
     main()

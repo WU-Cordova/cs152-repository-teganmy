@@ -32,7 +32,7 @@ class Game:
         
         print("Initial Deal:")
         print(f"Player's Hand: {"".join(str(card) for card in self.player_hand)} with a face value of: {self.player_score}")
-        print(f"Dealer's Hand: {(self.dealer_hand[0])} [Hidden] with a face value of: {(self.dealer_hand[0].card_face.face_value())})\n")
+        print(f"Dealer's Hand: {(self.dealer_hand[0])} [Hidden] with a face value of: {(self.dealer_hand[0].card_face.face_value())}\n")
         if (self.player_score == 21):
             print("Player wins!")
             self.over = True
@@ -55,7 +55,7 @@ class Game:
     def round(self):
         """ While both players have less than or equal to 21 points, they will play rounds. 
         Player can choose to hit or stay, picking up cards and calculating score."""
-        
+
         print(f"Player's Hand: {"".join(str(card) for card in self.player_hand)} | Score: {sum(card.card_face.face_value() for card in self.player_hand)}")
         move = input("Would you like to (H)it or (S)tay? ")
         if (move == "H"):
