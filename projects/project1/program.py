@@ -4,6 +4,8 @@ from projects.project1.multideck import Deck, shuffle, deal
 from projects.project1.game import Game
 
 def main():
+    """Creates a game and uses the round function to continue it until a player hits 21; 
+    offers the user the option to start new games."""
     game = Game()
     game.start_game()
 
