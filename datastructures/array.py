@@ -11,6 +11,7 @@ import os
 from typing import Any, Iterator, overload
 import numpy as np
 from numpy.typing import NDArray
+import copy
 
 
 from datastructures.iarray import IArray, T
@@ -18,75 +19,160 @@ from datastructures.iarray import IArray, T
 
 class Array(IArray[T]):  
 
-    def __init__(self, starting_sequence: Sequence[T]=[], data_type: type=object) -> None: 
+    def __init__(self, starting_sequence: Sequence[T]=[], data_type:  type=object) -> None: 
+         # Check that starting sequence is of valid sequence type
+        if not isinstance(starting_sequence, Sequence):
+            raise ValueError('starting_sequence must be a valid sequence type')
         self.__logical_size: int = len(starting_sequence)
         self.__physical_size: int = self.__logical_size
         self.__data_type: type = data_type
 
-        if not isinstance(starting_sequence, Sequence):
-            raise ValueError('starting_sequence must be a valid sequence type')
-
+        # Check that starting sequence only has 1 type of data
         for index in range(self.__logical_size):
             if not isinstance(starting_sequence[index], self.__data_type):
                 raise TypeError('Items in starting sequence are not all the same type')
-                
-        # for item in starting_sequence:
-        #     if not isinstance(item, self.__data_type):
-        #         raise TypeError(f'Item {repr(item)} is not of type {str(data_type)}')
         
-        self.__items: NDArray = np.empty(self.__logical_size, dtype = self.__data_type)
+        # Create array
+        self.__elements = np.empty(self.__logical_size, dtype = self.__data_type)
 
-        for index in range(self.__logical_size):
-            self.__items[index] = starting_sequence[index]
+        if not (isinstance (self.__data_type, int) or isinstance (self.__data_type, float) or isinstance (self.__data_type, complex)):
+        # Initialize array
+            for index in range(self.__logical_size):
+                self.__elements[index] = copy.deepcopy(starting_sequence[index])
+        else:
+            for index in range(self.__logical_size):
+                self.__elements[index] = copy.copy(starting_sequence[index])
 
     @overload
     def __getitem__(self, index: int) -> T: ...
     @overload
     def __getitem__(self, index: slice) -> Sequence[T]: ...
     def __getitem__(self, index: int | slice) -> T | Sequence[T]:
-            raise NotImplementedError('Indexing not implemented.')
+        if not isinstance (index, int | slice):
+            raise TypeError("Function requires index or slice")
+        if isinstance(index, int):
+            if index > self.__logical_size:
+                raise IndexError("Index out of bounds")
+            return self.__elements[index]
+        elif isinstance(index, slice):
+            start = index.start
+            stop = index.stop
+            step = index.step
+            if start is not None:
+                if start > self.__logical_size:
+                    raise IndexError("Index out of bounds")
+            if stop is not None:
+                if stop > self.__logical_size:
+                    raise IndexError("Index out of bounds")
+                    # check if start and stop are in bounds. If they are not,
+                    # raise an exception
+            return Array(starting_sequence = self.__elements[start:stop:step].tolist(), data_type = self.__data_type)
     
     def __setitem__(self, index: int, item: T) -> None:
-        raise NotImplementedError('Indexing not implemented.')
+        if not isinstance(item, self.__data_type):
+                raise TypeError('Items in starting sequence are not all the same type')
+        self.__elements[index] = item
 
     def append(self, data: T) -> None:
-        raise NotImplementedError('Append not implemented.')
 
+        # If array is at max capacity, double the array size
+        if (self.__physical_size == self.__logical_size):
+            self.__physical_size *= 2
+
+            # Create new array
+            newArray = np.empty(self.__physical_size, dtype = self.__data_type)
+
+            # Initialize array
+            for index in range(self.__logical_size):
+                newArray[index] = self.__elements[index]
+            self.__elements[index]
+        
+        # Add the new element to the end
+        self.__elements[len(self)-1] = data
+        self.__logical_size += 1
+        
+            
     def append_front(self, data: T) -> None:
-        raise NotImplementedError('Append front not implemented.')
+        # If array is at max capacity, double the array size
+        if self.__physical_size == self.__logical_size:
+            self.__physical_size *= 2
+
+            # Create new array
+            newArray = np.empty(self.__physical_size, dtype = self.__data_type)
+
+            # Initialize array
+            for index in range(self.__logical_size):
+                newArray[index] = self.__elements[index]
+            self.__elements[index]
+        
+        # Traverse the array backwards
+        for index in reversed(range(self.__logical_size)):
+            # Move every element forward by 1
+            self.__elements[index + 1] = self.__elements[index]
+        
+        # Add the new element to the front
+        self.__elements[0] = data
+        self.__logical_size += 1
 
     def pop(self) -> None:
-        raise NotImplementedError('Pop not implemented.')
-    
+        if (self.__logical_size <= self.__physical_size/4):
+            self.__physical_size = self.__physical_size/2
+
+        newArray = np.empty(self.__physical_size, dtype = self.__data_type)
+
+        for index in range(self.__logical_size):
+            newArray[index] = self.__elements[index]
+        
     def pop_front(self) -> None:
-        raise NotImplementedError('Pop front not implemented.')
+        if (self.__logical_size <= self.__physical_size/4):
+            self.__physical_size = self.__physical_size/2
+
+        newArray = np.empty(self.__physical_size, dtype = self.__data_type)
+
+        for index in range(self.__logical_size):
+            newArray[index-1] = self.__elements[index]
 
     def __len__(self) -> int: 
-        raise NotImplementedError('Length not implemented.')
+        return self.__logical_size
 
-    def __eq__(self, other: object) -> bool:
-        raise NotImplementedError('Equality not implemented.')
+    def __eq__(self, other: object) -> bool: 
+        if not isinstance(other, Array):
+            return False
+        if self.__logical_size != len(other):
+            return False
+        for i in range(len(other)):
+            if other[i] != self.__elements[i]:
+                return False
+        return True
     
     def __iter__(self) -> Iterator[T]:
-        raise NotImplementedError('Iteration not implemented.')
+        return iter(self.__elements) 
 
     def __reversed__(self) -> Iterator[T]:
-        raise
+        reversed_elements = reversed(self.__elements)
+        return iter(reversed_elements)
 
     def __delitem__(self, index: int) -> None:
-       raise NotImplementedError('Delete not implemented.')
+        if (self.__logical_size <= self.__physical_size/4):
+            self.__physical_size = self.__physical_size/2
 
+        self.__elements = np.delete(self.__elements, index)
+                
     def __contains__(self, item: Any) -> bool:
-        raise NotImplementedError('Contains not implemented.')
+        return item in self.__elements 
 
     def clear(self) -> None:
-        raise NotImplementedError('Clear not implemented.')
+        del(self.__elements)
+
+        self.__physical_size = 0
+        self.__logical_size = 0
+        self.__elements = np.empty(self.__physical_size, dtype = self.__data_type)
 
     def __str__(self) -> str:
         return '[' + ', '.join(str(item) for item in self) + ']'
     
     def __repr__(self) -> str:
-        return f'Array {self.__str__()}, Logical: {self.__item_count}, Physical: {len(self.__items)}, type: {self.__data_type}'
+        return f'Array {self.__str__()}, Logical: {self.__logical_size}, Physical: {len(self.__elements)}, type: {self.__data_type}'
     
 
 if __name__ == '__main__':
