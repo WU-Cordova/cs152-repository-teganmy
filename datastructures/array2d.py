@@ -113,6 +113,19 @@ class Array2D(IArray2D[T]):
     def __repr__(self) -> str: 
         return f'Array2D {self.rows_len} Rows x {self.cols_len} Columns, items: {str(self)}'
 
+    def __eq__(self, other: object) -> bool: 
+        if not isinstance(other, Array2D):
+            return False
+        if self.rows_len != len(other):
+            return False
+        if self.cols_len != len(other[0]):
+            return False
+        for r in range(len(other)):
+            for c in range(len(other[0])):
+                if self[r][c] != other[r][c]:
+                    return False
+        return True
+
 
 if __name__ == '__main__':
     filename = os.path.basename(__file__)
