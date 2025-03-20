@@ -35,7 +35,7 @@ class Array(IArray[T]):
         # Create array
         self.__elements = np.empty(self.__logical_size, dtype = self.__data_type)
 
-        if not (isinstance (self.__data_type, int) or isinstance (self.__data_type, float) or isinstance (self.__data_type, complex)):
+        if self.__data_type not in (int, float, complex):
         # Initialize array
             for index in range(self.__logical_size):
                 self.__elements[index] = copy.deepcopy(starting_sequence[index])
