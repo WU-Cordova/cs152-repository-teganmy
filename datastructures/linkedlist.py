@@ -166,16 +166,13 @@ class LinkedList[T](ILinkedList[T]):
                 self.size -= 1
             travel = travel.next
 
-
-    
-
-
     def pop(self) -> T:
         if self.empty:
             raise IndexError("The linked list is empty.")
         data = self.tail.data
         if self.head is self.tail:
             self.head = self.tail = None
+        self.tail = self.tail.previous
         self.size -= 1
         return data
 
@@ -185,6 +182,7 @@ class LinkedList[T](ILinkedList[T]):
         data = self.head.data
         if self.head is self.tail:
             self.head = self.tail = None
+        self.head = self.head.next
         self.size -= 1
         return data
 
