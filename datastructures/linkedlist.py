@@ -127,6 +127,12 @@ class LinkedList[T](ILinkedList[T]):
             raise IndexError("The linked list is empty.")
         if not isinstance(item, self.data_type):
             raise TypeError("Items are not the same type.")
+        if self.head and self.head.data == item:
+            self.head = self.head.next
+            if self.head:
+                self.head.previous = None
+            self.size -= 1
+            return
 
         travel = self.head
 
