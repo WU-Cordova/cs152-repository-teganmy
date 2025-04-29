@@ -9,34 +9,31 @@
 # solution, none of the milestones required any public methods beyond   #
 # the ones defined in this starter file.                                #
 #########################################################################
+from enum import Enum
+from dataclasses import dataclass
+class DrinkFlavor(Enum):
+    BLACK_COFFEE = "Black Coffee"
+    LATTE = "Latte"
+    MOCHA = "Mocha"
+    CHAI = "Chai"
+    HOT_CHOCOLATE = "Hot Chocolate"
+    
+    def __str__(self):
+        return str(self.value)
 
-class Drink:
-
-    def __init__(self, name, description, location):
-        """Creates an AdvItem from the specified properties.
-
-        Args:
-            name (str): the unique name of the item
-            description (str): a short description of the item
-            location (str): the name of the location where the item first appears
-        """
-        self.name = name
-        self.description = "Medium"
-        self.price = price
-        self.customization = customization
+class DrinkPrice(Enum):
+    BLACK_COFFEE = 3.50
+    LATTE = 4.50
+    MOCHA = 5.50
+    CHAI = 4.50
+    HOT_CHOCOLATE = 4.00
 
     def __str__(self):
-        """Converts an AdvItem to a string."""
-        return self.get_name()
+        return str(self.value)
 
-    def get_name(self):
-        """Returns the name of this item."""
-        return self.name
 
-    def get_description(self):
-        """Returns the description of this item."""
-        return self.description
-
-    def get_price(self):
-        """Returns the price of this item."""
-        return self.price
+class Drink:
+    name = DrinkFlavor
+    size: str = "Medium"
+    price = DrinkPrice
+    

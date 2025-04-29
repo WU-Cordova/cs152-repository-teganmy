@@ -78,7 +78,7 @@ class Game:
                 self.over = True
 
         elif (move == "S"):
-            print(f"fwoo Dealer's Hand: {"".join(str(card) for card in self.dealer_hand)} | Score: {self.dealer_score}")
+            print(f"Dealer's Hand: {"".join(str(card) for card in self.dealer_hand)} | Score: {self.dealer_score}")
             if(self.dealer_score > self.player_score):
                 print("Dealer wins!")
                 self.over = True
