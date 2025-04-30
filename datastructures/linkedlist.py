@@ -188,7 +188,8 @@ class LinkedList[T](ILinkedList[T]):
         data = self.head.data
         if self.head is self.tail:
             self.head = self.tail = None
-        self.head = self.head.next
+        else:
+            self.head = self.head.next
         self.size -= 1
         return data
 

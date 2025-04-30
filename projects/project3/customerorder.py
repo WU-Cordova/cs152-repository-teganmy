@@ -1,9 +1,20 @@
 from projects.project3.drink import Drink
-class Order:
-    def __init__(self, drinkCount:int, drink: Drink, customization: str = "None"):
-        """ Constructor for the Game class. Sets score, deck, hand, and "game-over" attributes for the players.
+from projects.project3.orderitem import OrderItem
+from datastructures.linkedlist import LinkedList
+from datastructures.hashmap import HashMap
+
+class CustomerOrder:
+    def __init__(self, name: str, items: list):
+        self.cust_name = name
+        self.items = items
+        self.order = LinkedList((name, items))
+
+    def __str__(self) -> str:
         """
-        # make new drink; figure out how to cover different names and stuff
-        order = HashMap[str, str]()
-        for drink in range(drinkCount):
-            hashmap[i] = str(i)
+        Returns a string representation of the stack.
+
+        Returns:
+            str: A string representation of the stack.
+        """
+        string = ', '.join([str(item) for item in self.items])
+        return f"Order for {self.cust_name}: {items_str}"
