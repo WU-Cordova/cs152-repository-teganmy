@@ -24,6 +24,8 @@ class System:
         self.orders_complete = False
 
     def new_order(self) -> None:
+        """ Prints initial menu information so customer knows what their choices are.
+        """
         print(("""Welcome To The Bistro!
         1. Display Menu
         2. Take New Order
@@ -32,11 +34,9 @@ class System:
         5. View End-of-Day Report
         6. Exit"""))
 
-        #option = input("What would you like to do? ")
-
     def order_option(self) -> None:
-        """ Creates a Multi-Deck of cards and deals to each of the players, 
-        printing information on the inital hand and score 
+        """ Creates new order once customer has chosen their first option 
+        and runs program according to customer input.
         """
         menu = ("""Welcome To The Bistro!
         1. Display Menu
@@ -53,6 +53,7 @@ class System:
                 case 1:
                     for item in self.menu:
                         print(f"Drink: {item.name}  Price: ${item.price:.2f}")
+                    print(menu)
 
                 case 2:
                     name = input("What's your name? ")
@@ -66,39 +67,39 @@ class System:
                         self.report.add(self.menu[drink-1])
                     custOrder = CustomerOrder(name, drink_order)
                     self.order_queue.enqueue(custOrder)
-                    self.open_orders.append(CustomerOrder)
+                    self.open_orders.append(custOrder)
+                    print(menu)
 
                 case 3:
-                    if len(self.report) == 0:
+                    if len(self.open_orders) == 0:
                         print("There are no open orders")                
                     else:
                         for order in self.open_orders:
                             print(str(order))
                     print(menu)
-                            # create order item with drink and customizaton
-                            # add order to queue
-                            # repeat back order with stack
+                          
                 case 4:
-                    recent = self.order_queue.dequeue()
-                    print(f"Completed order for {recent.cust_name}!")
+                    if len(self.order_queue) == 0:
+                        print("The queue is empty; there are no open orders!")
+                    else:
+                        recent = self.order_queue.dequeue()
+                        del(self.open_orders[0])
+                        print(f"Completed order for {recent.cust_name}!")
+                    print(menu)
 
                 case 5: 
                     print("End of day report:")
-                    
+                    print(f"{'Drinks':<20}{'Qty Sold':<20}{'Total':<10}")
+                    total = 0 
+                    for item in self.report.distinct_items():
+                        print(f"{str(item.name):<20}{self.report.count(item):<20}{str(item.price * self.report.count(item))+"0":<10}")
+                        total += item.price * self.report.count(item)
+                    print(f"{'Total Revenue:':<39} {total}0")
+                    print(menu)
+
                 case 6:
                     self.orders_complete = True
 
                 case 7:
                     print("Please enter a valid choice.")
         check_option(option)
-
-            # while option != "6":
-            #     main_menu(option)
-            # #match cases for 1, 2, 3, 4, 5, 6
-            # def main_menu(choice):
-            #     match option:
-            #         case "1":
-            #             for item in self.menu:
-            #                 print(f"Drink: {item.name}  Price: ${item.price:.2f}")
-        
-            

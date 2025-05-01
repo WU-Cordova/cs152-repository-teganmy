@@ -46,6 +46,9 @@ class Bag(IBag[T]):
             distinct.add(item)
         return distinct
 
+        def __str__(self, distinct) -> str:
+            return ', '.join(str([item for items in distinct]))
+
     def __contains__(self, item) -> bool:
         return item in self.__bag
 
