@@ -1,7 +1,6 @@
 from projects.project3.drink import Drink
 from projects.project3.orderitem import OrderItem
 from datastructures.linkedlist import LinkedList
-from datastructures.hashmap import HashMap
 
 class CustomerOrder:
     def __init__(self, name: str, items: list):

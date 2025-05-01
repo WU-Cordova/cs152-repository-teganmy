@@ -51,11 +51,13 @@ class System:
         def check_option(choice):
             match option:
                 case 1:
+                    """Display Menu"""
                     for item in self.menu:
                         print(f"Drink: {item.name}  Price: ${item.price:.2f}")
                     print(menu)
 
                 case 2:
+                    """Order taking sequence"""
                     name = input("What's your name? ")
                     drinkCount = int(input("How many drinks would you like to order? "))
                     drink_order = []
@@ -71,6 +73,7 @@ class System:
                     print(menu)
 
                 case 3:
+                    """Open order display"""
                     if len(self.open_orders) == 0:
                         print("There are no open orders")                
                     else:
@@ -79,6 +82,7 @@ class System:
                     print(menu)
                           
                 case 4:
+                    """Marks next order in queue as complete"""
                     if len(self.order_queue) == 0:
                         print("The queue is empty; there are no open orders!")
                     else:
@@ -88,6 +92,7 @@ class System:
                     print(menu)
 
                 case 5: 
+                    """End of Day Report"""
                     print("End of day report:")
                     print(f"{'Drinks':<20}{'Qty Sold':<20}{'Total':<10}")
                     total = 0 
@@ -98,6 +103,7 @@ class System:
                     print(menu)
 
                 case 6:
+                    """Exits system"""
                     self.orders_complete = True
 
                 case 7:
